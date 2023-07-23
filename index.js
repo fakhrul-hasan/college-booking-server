@@ -31,6 +31,13 @@ async function run() {
         const result = await collegesCollection.find().toArray();
         res.send(result);
     });
+    app.get('/search', async(req, res) => {
+            const {searchQuery} = req.query;
+            console.log(searchQuery);
+          const matchingColleges = await collegesCollection.find({ collegeName: { $regex: searchQuery, $options: 'i' } }).toArray();
+          res.send(matchingColleges);
+        
+      });
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
